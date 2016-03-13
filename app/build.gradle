@@ -19,11 +19,10 @@ android {
     }
 }
 repositories {
-    maven {
-        url "https://jitpack.io"
-    }
-}
+    maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
+    maven { url "https://jitpack.io" }
 
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:design:23.2.0'
@@ -32,7 +31,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.2.0'
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile 'com.github.lovetuzitong:MultiImageSelector:92c0404cfb'
+    compile 'com.github.ParkSangGwon:TedPicker:v1.0.10'
+
 
 
 
