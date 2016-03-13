@@ -1,0 +1,256 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+
+    tools:context="com.example.dardev.collegekart.EditProfileActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme"
+        android:elevation="4dp"
+        android:background="@color/ColorPrimary"
+        >
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:padding="10dp"
+
+            >
+
+            <ImageView
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/profile_edit_image"
+                android:background="@drawable/abc_btn_rating_star_off_mtrl_alpha"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_action_emo_cool"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"
+                android:minHeight="230dp"/>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_firstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <EditText
+                    android:theme="@style/TextAppearence.App.TextInputLayout"
+                    android:id="@+id/edit_firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/activatedColor"
+                    android:hint="@string/hint_first_name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_lastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <EditText
+                    android:theme="@style/TextAppearence.App.TextInputLayout"
+                    android:id="@+id/edit_lastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/activatedColor"
+                    android:hint="@string/hint_last_name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.widget.RadioGroup
+                android:id="@+id/edit_year"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <android.widget.RadioButton
+                    android:id="@+id/radio_fe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="F.E."
+                    android:textColor="@color/activatedColor"
+                    />
+                <android.widget.RadioButton
+                    android:id="@+id/edit_radio_se"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="S.E."
+                    android:textColor="@color/activatedColor"
+                    />
+                <android.widget.RadioButton
+                    android:id="@+id/edit_radio_te"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="T.E."
+                    android:textColor="@color/activatedColor"
+                    />
+                <android.widget.RadioButton
+                    android:id="@+id/edit_radio_be"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:buttonTint="@color/activatedColor"
+                    android:text="B.E."
+                    android:textColor="@color/activatedColor"
+                    />
+            </android.widget.RadioGroup>
+
+
+            <android.widget.RadioGroup
+                android:id="@+id/edit_branch"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <android.widget.RadioButton
+                    android:id="@+id/radio_comps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="Comps"
+                    android:textColor="@color/activatedColor"
+                    />
+                <android.widget.RadioButton
+                    android:id="@+id/edit_radio_it"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="IT"
+                    android:textColor="@color/activatedColor"
+                    />
+                <android.widget.RadioButton
+                    android:id="@+id/edit_radio_extc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="EXTC"
+                    android:textColor="@color/activatedColor"
+                    />
+                <android.widget.RadioButton
+                    android:id="@+id/edit_radio_etrx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/activatedColor"
+                    android:text="ETRX"
+                    android:textColor="@color/activatedColor"
+                    />
+            </android.widget.RadioGroup>
+
+
+            <EditText
+                android:id="@+id/edit_input_number"
+                android:theme="@style/TextAppearence.App.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:textColor="@color/activatedColor"
+                android:hint="Phone no." />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edit_input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <EditText
+                    android:theme="@style/TextAppearence.App.TextInputLayout"
+                    android:id="@+id/edit_input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/activatedColor"
+                    android:hint="@string/hint_email" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edit_input_layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <EditText
+                    android:theme="@style/TextAppearence.App.TextInputLayout"
+                    android:id="@+id/edit_input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="@color/activatedColor"
+                    android:hint="@string/hint_password" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/edit_input_layout_password_reenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+
+
+                <EditText
+                    android:id="@+id/edit_input_password_reenter"
+                    android:theme="@style/TextAppearence.App.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="@color/activatedColor"
+                    android:hint="Re-enter password" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button android:id="@+id/btn_edit_profile"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:background="@color/ColorPrimary"
+                android:layout_marginTop="40dp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>
+
+
+
+

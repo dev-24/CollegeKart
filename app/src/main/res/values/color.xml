@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ColorPrimary">#F44336</color>
+    <color name="ColorPrimaryDark">#B71C1C</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="floatingLabelColor">#c5c5c5</color>
+    <color name="activatedColor">#616161</color>
+    <color name="dark_blue_color">#1976D2</color>
+    <color name="blue_color">#2196F3</color>
+    <color name="primary">#3f51b5</color>
+    <color name="primary_dark">#303f9f</color>
+    <color name="ripple">#B71C1C</color>
+    <color name="accent">#F44336</color>
+    <color name="accent_pressed">#B71C1C</color>
+`  <color name="colorAccent">#ffffff</color>
+</resources>

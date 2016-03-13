@@ -1,0 +1,38 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+    <style name="SearchFlightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">#2196F3</item>
+        <item name="colorPrimaryDark">#0D47A1</item>
+    </style>
+
+    <style name="RadioButtonTheme" parent="android:Widget.CompoundButton.RadioButton">
+
+
+
+    </style>
+    <style name="AppTheme.ActionBar.Transparent" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+    </style>
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/floatingLabelColor</item>
+        <item name="android:textColorHint">@color/floatingLabelColor</item>
+        <item name="colorControlNormal">@color/floatingLabelColor</item>
+        <item name="colorControlActivated">@color/activatedColor</item>
+        <item name="colorControlHighlight">@color/activatedColor</item>
+        <!--<item name="android:colorAccent">@color/activatedColor</item>-->
+    </style>
+
+
+
+</resources>

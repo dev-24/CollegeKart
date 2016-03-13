@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.dardev.collegekart.HistoryActivity">
+
+    <item
+        android:id="@+id/action_home"
+        android:orderInCategory="200"
+        android:title="Home"
+        app:showAsAction="never"
+
+
+        />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="200"
+        android:title="@string/settings"
+        app:showAsAction="never"
+
+        />
+</menu>

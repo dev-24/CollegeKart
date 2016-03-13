@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AIR INDIA</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="guest_login"><u>Enter as a guest</u></string>
+    <string name="err_msg_first_name">First name cannot be empty</string>
+    <string name="err_msg_last_name">Last name cannot be empty</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="option_male">Male</string>
+    <string name="option_female">Female</string>
+    <string name="option_one_way">One Way</string>
+    <string name="option_round_trip">Round Trip</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_flight">Search Flight</string>
+
+    <!-- Navigation Drawer Strings -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_friends">Friends</string>
+    <string name="nav_item_notifications">Messages</string>
+
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_friends</item>
+        <item>@string/nav_item_notifications</item>
+    </string-array>
+
+    <string name="title_messages">Messages</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_home">Home</string>
+    <string name="title_activity_flight_booking">FlightBookingActivity</string>
+    <string name="title_activity_flight_list">FlightListActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="careers_info">Email us at careers@airindia.com</string>
+    <string name="about_us">About us</string>
+    <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="content_about_us">"The logo of the new airline is a red coloured flying swan with the \'Konark Chakra\' in orange, placed inside it. The flying swan has been morphed from Air India\'s characteristic logo, \'The Centaur\', whereas the \'Konark Chakra\' is reminiscent of Indian\'s logo".
+ \n\n The new logo features prominently on the tail of the aircraft. While the aircraft is ivory in colour, the base retains the red streak of Air India. Running parallel to each other are the orange and red speed lines from front door to the rear door, subtly signifying the individual identities merged into one. The brand name \'Air India\' runs across the tail of the aircraft.</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_image_picker">ImagePickerActivity</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_new_ad">NewAdActivity</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_buy_requests">BuyRequestsActivity</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_view_ad">ViewAdActivity</string>
+
+
+</resources>

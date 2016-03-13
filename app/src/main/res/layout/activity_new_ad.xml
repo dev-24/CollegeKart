@@ -1,0 +1,188 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dardev.collegekart.NewAdActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme"
+        android:elevation="4dp"
+        android:background="@color/ColorPrimary"
+        >
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="1"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:weightSum="1">
+
+        <ImageView
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/new_image"
+            android:background="@drawable/abc_btn_rating_star_off_mtrl_alpha"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_action_emo_cool"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            android:scaleType="centerCrop"
+            app:layout_collapseMode="parallax"
+            android:minHeight="230dp"/>
+
+            </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:weightSum="1">
+
+
+
+
+                    <AutoCompleteTextView
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:backgroundTint="@color/mdtp_white"
+                        android:hint="Product Name"
+                        android:id="@+id/new_product_name"
+                        android:paddingLeft="5dp"
+                        android:background="@drawable/edit_text_style"
+                        android:layout_gravity="center_horizontal" />
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/new_price"
+                        android:paddingLeft="5dp"
+                        android:hint="Price"
+                        android:background="@drawable/edit_text_style"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/new_description"
+                        android:height="50dp"
+                        android:paddingLeft="5dp"
+                        android:hint="Description"
+                        android:background="@drawable/edit_text_style"
+                        android:layout_gravity="center_horizontal"/>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/mdtp_white"
+        >
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SELL"
+                            android:textSize="15dp"
+                            android:id="@+id/radioButton_sell"
+
+                            android:paddingLeft="5dp"
+                            android:layout_marginStart="60dp"
+                            android:layout_centerVertical="true" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="RENT"
+                            android:textSize="15dp"
+                            android:id="@+id/radioButton_rent"
+                            android:layout_toRightOf="@+id/radioButton_sell"
+                            android:layout_marginLeft="60dp"
+                            android:layout_marginStart="60dp" />
+    </RadioGroup>
+
+
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:inputType="number"
+
+                        android:id="@+id/new_period"
+
+                        android:paddingLeft="5dp"
+                        android:hint="Period in months"
+                        android:background="@drawable/edit_text_style"
+                        android:layout_gravity="center_horizontal"/>
+
+
+
+                    <Button android:id="@+id/btn_create_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Create Advertisement"
+                        android:background="@color/ColorPrimary"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+
+                        />
+
+
+
+                </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    </RelativeLayout>
+
+
+
+

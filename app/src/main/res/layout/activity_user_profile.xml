@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dardev.collegekart.UserProfileActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_floating_material_light"
+
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:weightSum="1">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme"
+                android:elevation="4dp"
+                android:background="@color/ColorPrimary"
+                >
+                <include
+                    android:id="@+id/tool_bar"
+                    layout="@layout/tool_bar" />
+
+            </android.support.design.widget.AppBarLayout>
+
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/profile_image"
+                android:background="@drawable/abc_btn_rating_star_off_mtrl_alpha"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_action_emo_cool" />
+
+
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:weightSum="1"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="5dp"
+                    android:textSize="15dp"
+                    android:text="Profile Name"
+                    android:id="@+id/profile_name"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="Year"
+                    android:id="@+id/profile_year"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="Branch"
+                    android:id="@+id/profile_branch"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="Phone No."
+                    android:id="@+id/profile_contact"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="Email id."
+                    android:id="@+id/profile_email"
+                    android:layout_gravity="center_horizontal" />
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    />
+
+
+</RelativeLayout>
