@@ -32,9 +32,9 @@
 
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/profile_image"
                 android:background="@drawable/abc_btn_rating_star_off_mtrl_alpha"
                 android:layout_gravity="center_horizontal"
