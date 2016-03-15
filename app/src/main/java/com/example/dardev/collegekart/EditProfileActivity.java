@@ -20,6 +20,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         mToolbar.setTitle("Edit Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

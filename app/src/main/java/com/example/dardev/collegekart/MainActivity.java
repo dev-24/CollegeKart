@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
 
         @Override
         public CharSequence getPageTitle(int position) {
+
             return mFragmentTitleList.get(position);
         }
     }
