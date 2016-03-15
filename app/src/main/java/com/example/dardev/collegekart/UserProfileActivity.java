@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class UserProfileActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private static final int INTENT_REQUEST_GET_IMAGES = 1;
     private ImageView image;
 
 
@@ -30,13 +29,6 @@ public class UserProfileActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         mToolbar.setTitle("User Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        image= (ImageView) findViewById(R.id.profile_image);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getImages();
-            }
-        });
     }
 
     @Override
@@ -55,22 +47,6 @@ public class UserProfileActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void getImages() {
 
-        Intent intent  = new Intent(this, ImagePickerActivity.class);
-        startActivityForResult(intent,INTENT_REQUEST_GET_IMAGES);
-
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resuleCode, Intent intent) {
-        super.onActivityResult(requestCode, resuleCode, intent);
-
-        if (requestCode == INTENT_REQUEST_GET_IMAGES && resuleCode == Activity.RESULT_OK ) {
-
-            ArrayList<Uri> image_uris = intent.getParcelableArrayListExtra(ImagePickerActivity.EXTRA_IMAGE_URIS);
-
-            //do something
-        }
-    }
 
 }

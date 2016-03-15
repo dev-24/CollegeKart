@@ -41,13 +41,12 @@
             >
 
             <ImageView
-                android:layout_width="230dp"
+                android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:layout_marginTop="20dp"
                 android:id="@+id/profile_edit_image"
                 android:background="@drawable/abc_btn_rating_star_off_mtrl_alpha"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_action_emo_cool"
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"

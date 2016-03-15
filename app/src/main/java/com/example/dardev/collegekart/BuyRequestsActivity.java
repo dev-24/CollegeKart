@@ -53,7 +53,7 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         BuyRequest advertClicked = (BuyRequest)optionsAdapter.getItem(i);
 
-        Intent intent = new Intent(this,BuyRequestsActivity.class);
+        Intent intent = new Intent(this,UserProfileActivity.class);
 //based on item add info to intent
         startActivity(intent);
     }
@@ -90,7 +90,7 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
             Holder holder;
             if(convertView==null)
             {
-                LayoutInflater li =  LayoutInflater.from(getApplicationContext());
+                LayoutInflater li =  getLayoutInflater();
                 convertView = li.inflate(R.layout.buy_request_list_item, null);
                 holder=new Holder();
                 holder.title = (TextView) convertView.findViewById(R.id.txt_titel);
