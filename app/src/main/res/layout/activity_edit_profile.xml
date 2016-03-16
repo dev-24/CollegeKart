@@ -252,7 +252,8 @@
                 android:background="@color/ColorPrimary"
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="40dp"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:onClick="onEditProfile"/>
 
         </LinearLayout>
 

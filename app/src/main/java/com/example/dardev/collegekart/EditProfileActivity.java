@@ -9,7 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.dardev.collegekart.R;
 import com.gun0912.tedpicker.ImagePickerActivity;
@@ -22,6 +25,11 @@ public class EditProfileActivity extends AppCompatActivity {
     public static final int INTENT_REQUEST_GET_IMAGES=1;
     private ImageView profileImage;
 
+    private EditText editFirstName, editLastName, editPhone, editEmail, editPass, editPassRe;
+    private RadioGroup rgEditYear, rgEditBranch;
+
+    private String sFName, sLName, sPhone, sEmail, sPass, sPassRe, sYear, sBranch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +38,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         mToolbar.setTitle("Edit Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         profileImage= (ImageView) findViewById(R.id.profile_edit_image);
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +47,18 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        rgEditYear = (RadioGroup) findViewById(R.id.rg_year);
+        String sYear = ((RadioButton)findViewById(rgEditYear.getCheckedRadioButtonId() )).getText().toString();
+
+        rgEditBranch = (RadioGroup) findViewById(R.id.rg_year);
+        String sBranch = ((RadioButton)findViewById(rgEditBranch.getCheckedRadioButtonId() )).getText().toString();
+
+        editFirstName= (EditText) findViewById(R.id.edit_firstName);
+        editLastName= (EditText) findViewById(R.id.edit_lastName);
+        editPhone=(EditText) findViewById(R.id.edit_input_number);
+        editEmail= (EditText)findViewById(R.id.edit_input_email);
+        editPass =(EditText) findViewById(R.id.edit_input_password);
+        editPassRe= (EditText)findViewById(R.id.edit_input_password_reenter);
 
     }
     @Override
@@ -74,4 +95,59 @@ public class EditProfileActivity extends AppCompatActivity {
             //do something
         }
     }
+
+    public String isProfileValid()
+    {
+
+        sFName= editFirstName.getText().toString().trim();
+        sLName = editLastName.getText().toString().trim();
+        sPhone = editPhone.getText().toString().trim();
+        sEmail = editEmail.getText().toString().trim();
+        sPass = editPass.getText().toString().trim();
+        sPassRe = editPassRe.getText().toString().trim();
+
+        sYear = ((RadioButton)findViewById(rgEditYear.getCheckedRadioButtonId() )).getText().toString();
+        sBranch = ((RadioButton)findViewById(rgEditBranch.getCheckedRadioButtonId())).getText().toString();
+
+        if( sFName.equals("") )
+        {
+            return "Profile First Name";
+        }
+        if( sLName.equals("") )
+        {
+            return "Profile Last Name";
+        }
+        if( sPhone.equals(""))
+        {
+            return "Profile Mobile";
+        }
+        if( sEmail.equals("") && validateEmail(sEmail))
+        {
+            return "Profile Email";
+        }
+        if( sPass.equals("") && sPass.length() > 6 )
+        {
+            return "Profile Password";
+        }
+        if( sPassRe.equals("") && sPassRe.equals(sPass))
+        {
+            return "Profile Re-enter Password";
+        }
+        if( sYear.equals("") )
+        {
+            return "Profile Year";
+        }
+        if( sBranch.equals("") )
+        {
+            return "Profile Branch";
+        }
+
+        return "Profile Valid";
+    }
+
+    private boolean validateEmail(String email) {
+
+        return false;
+    }
+
 }

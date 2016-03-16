@@ -54,8 +54,8 @@
                 android:weightSum="1">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:id="@+id/new_ad_image"
                     android:background="@drawable/abc_btn_rating_star_off_mtrl_alpha"
@@ -191,6 +191,7 @@
                         android:layout_marginTop="5dp"
                         android:paddingLeft="5dp"
                         android:layout_marginBottom="60dp"
+                        android:onClick="onCreateNewAd"
                         />
 
 

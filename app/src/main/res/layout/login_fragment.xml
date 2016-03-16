@@ -55,14 +55,15 @@
             android:text="@string/btn_login"
             android:background="@color/ColorPrimary"
             android:layout_marginTop="40dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="onLogin"/>
 
         <TextView
             android:id="@+id/guestHyperLink"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="20dp"
-          android:gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:text="@string/guest_login"
             android:textColor="@color/activatedColor"
 

@@ -33,14 +33,17 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Firebase ref;
-    private EditText firstName;
-    private EditText lastName;
-    private RadioGroup rgYear;
-    private RadioGroup rgBranch;
-    private EditText mobile;
-    private EditText email;
-    private EditText password;
-    private EditText passwordRe;
+
+    /*Login*/
+    private EditText loginEmail, loginPassword;
+    private String logEmail, logPass;
+
+    /*Password*/
+    private RadioGroup rgYear, rgBranch;
+    private EditText firstName, lastName, mobile, email, password, passwordRe;
+    private String sFName, sLName, sMob, sEm, sPass, sPassRe, sYear, sBranch;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +65,21 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        firstName= (EditText) findViewById(R.id.input_firstName);
-        lastName= (EditText) findViewById(R.id.input_lastName);
 
+
+        /*Login*/
+        loginEmail = (EditText) findViewById(R.id.input_email);
+        loginPassword = (EditText) findViewById(R.id.input_password);
+
+        /*SignUp*/
         rgYear = (RadioGroup) findViewById(R.id.rg_year);
         String year = ((RadioButton)findViewById(rgYear.getCheckedRadioButtonId() )).getText().toString();
+
         rgBranch = (RadioGroup) findViewById(R.id.rg_branch);
         String branch = ((RadioButton)findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString();
+
+        firstName= (EditText) findViewById(R.id.input_firstName);
+        lastName= (EditText) findViewById(R.id.input_lastName);
         mobile=(EditText) findViewById(R.id.input_number);
         email= (EditText)findViewById(R.id.input_email);
         password =(EditText) findViewById(R.id.input_password);
@@ -133,21 +144,82 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
         return super.onOptionsItemSelected(item);
     }
 
-    public void onSignUp(View view)
+
+    public String isLoginValid()
     {
-      if( !isEmpty() && validateEmail())
-      {
 
-      }
+        logPass = loginPassword.getText().toString().trim();
+        logEmail = loginEmail.getText().toString().trim();
 
+
+        if( logPass.equals("") && validateEmail(logEmail))
+        {
+            return "Login Password";
+        }
+        if( logPass.equals("") && logPass.length() > 6)
+        {
+            return "Signup Password";
+        }
+
+        return "Login Valid";
 
     }
 
-    private boolean isEmpty() {
-        return false;
+    public String isSignUpValid()
+    {
+
+        sFName= firstName.getText().toString().trim();
+        sLName = lastName.getText().toString().trim();
+        sMob = mobile.getText().toString().trim();
+        sEm = email.getText().toString().trim();
+        sPass = password.getText().toString().trim();
+        sPassRe = passwordRe.getText().toString().trim();
+
+        sYear = ((RadioButton)findViewById(rgYear.getCheckedRadioButtonId() )).getText().toString();
+        sBranch = ((RadioButton)findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString();
+
+        if( sFName.equals("") )
+        {
+            return "First Name";
+        }
+        if( sLName.equals("") )
+        {
+            return "Last Name";
+        }
+        if( sMob.equals(""))
+        {
+            return "Mobile";
+        }
+        if( sEm.equals("") && validateEmail(sEm))
+        {
+            return "Email";
+        }
+        if( sPass.equals("") && sPass.length() > 6 )
+        {
+            return "Password";
+        }
+        if( sPassRe.equals("") && sPassRe.equals(sPass))
+        {
+            return "Re-enter Password";
+        }
+        if( sYear.equals("") )
+        {
+            return "Year";
+        }
+        if( sBranch.equals("") )
+        {
+            return "Branch";
+        }
+
+        return "SignUp Valid";
     }
 
-    private boolean validateEmail() {
+
+
+
+
+
+    private boolean validateEmail(String email) {
 
         return false;
     }

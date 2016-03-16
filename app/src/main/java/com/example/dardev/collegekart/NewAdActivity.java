@@ -13,7 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.gun0912.tedpicker.ImagePickerActivity;
 
@@ -26,14 +29,23 @@ public class NewAdActivity extends AppCompatActivity {
     public static final int INTENT_REQUEST_GET_IMAGES=1;
     private ImageView newAdImage;
 
+    private RadioGroup rgSellRent;
+    private EditText productName, productPrice, productDescription, productRentPeriod;
+
+    private String pName, pPrice, pDesc, pRentPeriod, pSellRent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_ad);
+
         mToolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(mToolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
+
         mToolbar.setTitle("New Advertisement");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         newAdImage= (ImageView) findViewById(R.id.new_ad_image);
         newAdImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +53,13 @@ public class NewAdActivity extends AppCompatActivity {
                 getImages();
             }
         });
+
+        rgSellRent = (RadioGroup) findViewById(R.id.edit_new_sell_rent);
+        productName = (EditText) findViewById(R.id.input_firstName);
+        productPrice = (EditText) findViewById(R.id.input_lastName);
+        productDescription =(EditText) findViewById(R.id.input_number);
+        productRentPeriod = (EditText)findViewById(R.id.input_email);
+
     }
 
     @Override
@@ -75,7 +94,46 @@ public class NewAdActivity extends AppCompatActivity {
             ArrayList<Uri> image_uris = intent.getParcelableArrayListExtra(ImagePickerActivity.EXTRA_IMAGE_URIS);
             newAdImage.setImageURI(null);
             newAdImage.setImageURI(image_uris.get(0));
+
+
             //do something
         }
     }
+
+    public String isValid(){
+
+        pName= productName.getText().toString().trim();
+        pPrice = productPrice.getText().toString().trim();
+        pDesc = productDescription.getText().toString().trim();
+        pRentPeriod = productRentPeriod.getText().toString().trim();
+        pSellRent = ((RadioButton)findViewById(rgSellRent.getCheckedRadioButtonId() )).getText().toString();
+
+        if( pName.equals("") )
+        {
+            return "Product Name";
+        }
+        if( pPrice.equals("") )
+        {
+            return "Product Price";
+        }
+        if( pDesc.equals("") )
+        {
+            return "Product Desription";
+        }
+        if( pRentPeriod.equals("") )
+        {
+            return "Product Period";
+        }
+        if( pSellRent.equals("") )
+        {
+            return "Product Sell/Rent";
+        }
+
+
+        return "New Ad. Valid";
+    }
+
+
+
+
 }
