@@ -11,10 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.dardev.collegekart.Fragments.LoginFragment;
 import com.example.dardev.collegekart.Fragments.SignUpFragment;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +32,21 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
     private Toolbar toolbar;                              // Declaring the Toolbar Object
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private Firebase ref;
+    private EditText firstName;
+    private EditText lastName;
+    private RadioGroup rgYear;
+    private RadioGroup rgBranch;
+    private EditText mobile;
+    private EditText email;
+    private EditText password;
+    private EditText passwordRe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ref = new Firebase("https://collegekart.firebaseio.com/users");
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -47,6 +62,17 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        firstName= (EditText) findViewById(R.id.input_firstName);
+        lastName= (EditText) findViewById(R.id.input_lastName);
+
+        rgYear = (RadioGroup) findViewById(R.id.rg_year);
+        String year = ((RadioButton)findViewById(rgYear.getCheckedRadioButtonId() )).getText().toString();
+        rgBranch = (RadioGroup) findViewById(R.id.rg_branch);
+        String branch = ((RadioButton)findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString();
+        mobile=(EditText) findViewById(R.id.input_number);
+        email= (EditText)findViewById(R.id.input_email);
+        password =(EditText) findViewById(R.id.input_password);
+        passwordRe= (EditText)findViewById(R.id.input_password_reenter);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -105,6 +131,25 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
         //noinspection SimplifiableIfStatement
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onSignUp(View view)
+    {
+      if( !isEmpty() && validateEmail())
+      {
+
+      }
+
+
+    }
+
+    private boolean isEmpty() {
+        return false;
+    }
+
+    private boolean validateEmail() {
+
+        return false;
     }
 }
 

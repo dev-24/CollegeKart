@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.dardev.collegekart.HomeActivity;
 import com.example.dardev.collegekart.R;
+import com.firebase.client.Firebase;
 
 /**
  * Created by samarth on 23/12/15.
@@ -28,6 +29,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout  inputLayoutEmail, inputLayoutPassword;
     private Button btnSignUp;
     private TextView guestUser;
+    private Firebase ref;
     public LoginFragment()
     {}
     @Override
@@ -57,6 +59,8 @@ public class LoginFragment extends Fragment {
                 submitForm();
             }
         });
+        ref = new Firebase("https://collegekart.firebaseio.com/users");
+
         guestUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
