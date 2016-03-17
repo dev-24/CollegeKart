@@ -2,6 +2,8 @@ package com.example.dardev.collegekart;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.dardev.collegekart.R;
+import com.example.dardev.collegekart.model.User;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.utilities.Base64;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
 import java.util.ArrayList;
@@ -29,6 +37,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private RadioGroup rgEditYear, rgEditBranch;
 
     private String sFName, sLName, sPhone, sEmail, sPass, sPassRe, sYear, sBranch;
+    private Firebase ref;
+    private User post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +58,8 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         rgEditYear = (RadioGroup) findViewById(R.id.rg_year);
-        String sYear = ((RadioButton)findViewById(rgEditYear.getCheckedRadioButtonId() )).getText().toString();
 
         rgEditBranch = (RadioGroup) findViewById(R.id.rg_year);
-        String sBranch = ((RadioButton)findViewById(rgEditBranch.getCheckedRadioButtonId() )).getText().toString();
 
         editFirstName= (EditText) findViewById(R.id.edit_firstName);
         editLastName= (EditText) findViewById(R.id.edit_lastName);
@@ -59,6 +67,8 @@ public class EditProfileActivity extends AppCompatActivity {
         editEmail= (EditText)findViewById(R.id.edit_input_email);
         editPass =(EditText) findViewById(R.id.edit_input_password);
         editPassRe= (EditText)findViewById(R.id.edit_input_password_reenter);
+        Firebase.setAndroidContext(this);
+
 
     }
     @Override
@@ -94,6 +104,47 @@ public class EditProfileActivity extends AppCompatActivity {
             profileImage.setImageURI(image_uris.get(0));
             //do something
         }
+    }
+
+    @Override
+    protected void onResume() {
+        Intent intent=getIntent();
+        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+intent.getStringExtra("key"));
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+
+
+                    post = dataSnapshot.getValue(User.class);
+
+
+                    try {
+                        byte[] imageByte = Base64.decode(post.getImage());
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
+//                        viewAdImage.setImageBitmap(bitmap);
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            // ....
+        });
+        super.onResume();
     }
 
     public String isProfileValid()

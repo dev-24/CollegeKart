@@ -1,6 +1,10 @@
 package com.example.dardev.collegekart;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,17 +18,34 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dardev.collegekart.model.Ad;
 import com.example.dardev.collegekart.model.BuyRequest;
+import com.example.dardev.collegekart.model.User;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.utilities.Base64;
+import com.melnykov.fab.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BuyRequestsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ListView setting_list;
-    private ArrayList<BuyRequest> options;
+    private ArrayList<User> options;
     private OptionsAdapter optionsAdapter;
     private Toolbar mToolbar;
+    private SharedPreferences sharedPreferences;
+    private Firebase ref;
+    private User post;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +53,8 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_buy_requests);
         setting_list = (ListView) findViewById(R.id.list_buy_requests);
 
-        options = new ArrayList<BuyRequest>();
-        options.add(new BuyRequest("Login/Logout", R.drawable.ic_profile));
-        options.add(new BuyRequest("Login/Logout" ,R.drawable.ic_profile));
-        options.add(new BuyRequest("Login/Logout" ,R.drawable.ic_profile));
-        options.add(new BuyRequest("Login/Logout" ,R.drawable.ic_profile));
+        options = new ArrayList<User>();
+
 
         optionsAdapter = new OptionsAdapter();
         setting_list.setAdapter(optionsAdapter);
@@ -46,15 +64,18 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
         setSupportActionBar(mToolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         mToolbar.setTitle("Buy Request By");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Firebase.setAndroidContext(this);
+        sharedPreferences=getSharedPreferences("MyPrefs",MODE_PRIVATE);
+
 
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        BuyRequest advertClicked = (BuyRequest)optionsAdapter.getItem(i);
+        User advertClicked = (User)optionsAdapter.getItem(i);
 
         Intent intent = new Intent(this,UserProfileActivity.class);
-//based on item add info to intent
+        intent.putExtra("key",advertClicked.getKey());
         startActivity(intent);
     }
 
@@ -104,10 +125,79 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
                 holder=(Holder) convertView.getTag();
             }
 
-            BuyRequest item = (BuyRequest) getItem(position);
-            holder.title.setText(item.getTitle());
+            User item = (User) getItem(position);
+            holder.title.setText(item.getFirstname().toUpperCase() + " " + item.getLastname().toUpperCase());
             System.out.println(holder.title.getText());
-            holder.icon.setImageResource(item.getImageId());
+            if(item.getImage()!=null) {
+                try {
+                    byte[] imageByte = Base64.decode(item.getImage());
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
+                    holder.icon.setImageBitmap(bitmap);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            FloatingActionButton fab = (FloatingActionButton) convertView.findViewById(R.id.fab);
+            fab.setTag(item.getKey());
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   final String key= (String) view.getTag();
+                    ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+getIntent().getStringExtra("key"));
+
+
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()) {
+                                Map<String, String> post1 = new HashMap<String, String>();
+                                post1.put("product", dataSnapshot.child("title").getValue(String.class));
+                                String period;
+                                post1.put("period",  period = dataSnapshot.child("period") == null ? "" : dataSnapshot.child("period").getValue(String.class));
+                                post1.put("seller", sharedPreferences.getString("UID",""));
+                                post1.put("buyer", key);
+                                post1.put("type", dataSnapshot.child("type").getValue(String.class));
+                                post1.put("image", dataSnapshot.child("image").getValue(String.class));
+                                post1.put("time", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"/"+(1+Calendar.getInstance().get(Calendar.MONTH))+"/"+Calendar.getInstance().get(Calendar.YEAR));
+                                Firebase newRef = new Firebase("https://fiery-inferno-2210.firebaseio.com/transactions/"+getIntent().getStringExtra("key"));
+                                newRef.setValue(post1, new Firebase.CompletionListener() {
+                                    @Override
+                                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                        if (firebaseError != null) {
+                                            System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                                        } else {
+                                            ref.setValue(null);
+                                            Toast.makeText(getApplicationContext(), "Buyer approved!", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(getApplicationContext(), ViewAdActivity.class);
+                                            intent.putExtra("key", key);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+
+
+
+
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                        // ....
+                    });
+
+                }
+            });
+
 
             return convertView;
         }
@@ -131,4 +221,80 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        Intent intent=getIntent();
+        progress = new ProgressDialog(this);
+
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+intent.getStringExtra("key"));
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+
+                        System.out.println("ad "+dataSnapshot.getKey());
+
+                        DataSnapshot buyRequests=  dataSnapshot.child("buyrequests");
+                        if (buyRequests != null) {
+                            for(DataSnapshot brChild: buyRequests.getChildren())
+                            {
+                                System.out.println("buyrequest "+brChild.getKey());
+                                Firebase fireref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+brChild.getKey());
+                                fireref.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot != null) {
+                                            progress.hide();
+
+
+                                                post = dataSnapshot.getValue(User.class);
+                                                post.setKey(dataSnapshot.getKey());
+                                                options.add(post);
+
+
+
+                                        }
+                                        optionsAdapter = new OptionsAdapter();
+
+
+                                        setting_list.setAdapter(optionsAdapter);
+
+                                        optionsAdapter.notifyDataSetChanged();
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+
+
+                            }
+                        }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            // ....
+        });
+
+
+
+        super.onResume();
+    }
 }

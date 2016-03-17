@@ -1,7 +1,12 @@
 package com.example.dardev.collegekart.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,8 +22,15 @@ import android.widget.TextView;
 import com.example.dardev.collegekart.BuyRequestsActivity;
 import com.example.dardev.collegekart.R;
 import com.example.dardev.collegekart.model.Ad;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.utilities.Base64;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -43,6 +55,10 @@ public class MyAdsFragment extends Fragment {
     private ListView setting_list;
     private ArrayList<Ad> options;
     private OptionsAdapter optionsAdapter;
+    private Firebase ref;
+    private ProgressDialog progress;
+    private SharedPreferences sharedPreferences;
+    private Ad post;
 
     /**
      * Use this factory method to create a new instance of
@@ -65,7 +81,6 @@ public class MyAdsFragment extends Fragment {
     public MyAdsFragment() {
         // Required empty public constructor
     }
-
     class Holder{
         TextView title;
         TextView desc;
@@ -117,9 +132,18 @@ public class MyAdsFragment extends Fragment {
 
             Ad item = (Ad) getItem(position);
             holder.title.setText(item.getTitle());
-            holder.icon.setImageResource(item.getImageId());
-            holder.desc.setText(item.getDesc());
-            holder.price.setText(item.getPrice());
+            try {
+                byte[] imageByte = Base64.decode(item.getImage());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
+                holder.icon.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            holder.desc.setText(item.getType());
+            holder.price.setText("INR "+item.getPrice());
 
             return convertView;
         }
@@ -141,13 +165,11 @@ public class MyAdsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate(R.layout.fragment_one_way, container, false);
         setting_list = (ListView) rootView.findViewById(R.id.list_ads);
+        Firebase.setAndroidContext(getActivity());
+
 
         options = new ArrayList<Ad>();
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25", R.drawable.ic_profile));
+
 
         //  FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
@@ -164,18 +186,23 @@ public class MyAdsFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Ad advertClicked = (Ad)optionsAdapter.getItem(i);
+                Ad advertClicked = (Ad) optionsAdapter.getItem(i);
 
-                Intent intent = new Intent(getActivity(),BuyRequestsActivity.class);
-//based on item add info to intent
+                Intent intent = new Intent(getActivity(), BuyRequestsActivity.class);
+                intent.putExtra("key",post.getKey());
                 startActivity(intent);
 
             }
 
 
-
         });
+        sharedPreferences=getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        progress = new ProgressDialog(getContext());
 
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
         return rootView;
     }
 
@@ -214,6 +241,46 @@ public class MyAdsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads");
+        Query queryRef=ref.orderByChild("seller").equalTo(sharedPreferences.getString("UID",""));
+        queryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+                    options.clear();
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                        post = child.getValue(Ad.class);
+                        post.setKey(child.getKey());
+                        options.add(post);
+                        System.out.println(post.getTitle());
+
+                    }
+
+                }
+                optionsAdapter = new OptionsAdapter();
+
+
+                setting_list.setAdapter(optionsAdapter);
+                progress.hide();
+
+                optionsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            // ....
+        });
+
+
+        super.onResume();
+    }
 
 }
 

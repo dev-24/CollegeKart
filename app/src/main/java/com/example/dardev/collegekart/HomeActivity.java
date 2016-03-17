@@ -61,18 +61,7 @@ public class HomeActivity extends AppCompatActivity  {
 //        }
         mToolbar.setTitle(title);
 
-       /* drawerFragment = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-        drawerFragment.setDrawerListener(this);
-        FloatingActionButton floatingActionButton= (FloatingActionButton)findViewById(R.id.myFAB);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1=new Intent(getApplicationContext(),FlightBookingActivity.class);
-                startActivity(intent1);
 
-            }
-        });*/
         viewPager = (ViewPager) findViewById(R.id.flight_booking_viewpager);
         setupViewPager(viewPager);
 
@@ -140,6 +129,7 @@ public class HomeActivity extends AppCompatActivity  {
       {
          case  R.id.action_settings:
              intent = new Intent(this,EditProfileActivity.class);
+             intent.putExtra("key",sharedPreferences.getString("UID",""));
              startActivity(intent);
           break;
           case R.id.action_history:

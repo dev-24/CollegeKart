@@ -26,7 +26,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_launcher"
+                android:src="@drawable/ic_action_emo_cool"
 
                 />
             <RelativeLayout
@@ -55,7 +55,7 @@
         fab:fab_colorPressed="#999999"
         fab:fab_colorRipple="#999999"
         fab:fab_type="mini"
-        android:onClick="onAddAd"
+        android:onClick="onApprove"
         android:elevation="5dp"
         android:layout_alignParentEnd="true"
         android:layout_margin="5dp"

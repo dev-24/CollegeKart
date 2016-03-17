@@ -78,12 +78,10 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView= inflater.inflate(R.layout.signup_fragment, container, false);
+        final View rootView= inflater.inflate(R.layout.signup_fragment, container, false);
         rgYear = (RadioGroup) rootView.findViewById(R.id.rg_year);
-         year= ((RadioButton) rootView.findViewById(rgYear.getCheckedRadioButtonId())).getText().toString();
 
         rgBranch = (RadioGroup)  rootView.findViewById(R.id.rg_branch);
-       branch = ((RadioButton) rootView.findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString();
 
         firstName= (EditText)  rootView.findViewById(R.id.input_firstName);
         lastName= (EditText)  rootView.findViewById(R.id.input_lastName);
@@ -95,7 +93,8 @@ public class SignUpFragment extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).register(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString(), year,branch,mobile.getText().toString());
+                ((MainActivity)getActivity()).register(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString(), ((RadioButton) rootView.findViewById(rgYear.getCheckedRadioButtonId())).getText().toString(),     ((RadioButton) rootView.findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString()
+                ,mobile.getText().toString());
             }
         });
 

@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class MarketFragment extends Fragment {
     private OptionsAdapter optionsAdapter;
     private SharedPreferences sharedPreferences;
     private ProgressDialog progress;
+    private Button buy_rent;
 
     /**
      * Use this factory method to create a new instance of
@@ -145,7 +147,7 @@ public class MarketFragment extends Fragment {
             }
 
             holder.desc.setText(item.getType());
-            holder.price.setText(item.getPrice());
+            holder.price.setText("INR "+item.getPrice());
 
             return convertView;
         }
@@ -191,6 +193,7 @@ public class MarketFragment extends Fragment {
                 Ad advertClicked = (Ad) optionsAdapter.getItem(i);
 
                 Intent intent = new Intent(getActivity(), ViewAdActivity.class);
+                intent.putExtra("key",((Ad) optionsAdapter.getItem(i)).getKey());
 //based on item add info to intent
                 startActivity(intent);
 
@@ -223,10 +226,11 @@ public class MarketFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot != null) {
+                    options.clear();
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
 
                         Ad post = child.getValue(Ad.class);
-
+                            post.setKey(child.getKey());
                         options.add(post);
                         System.out.println(post.getTitle());
 

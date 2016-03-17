@@ -1,14 +1,17 @@
 package com.example.dardev.collegekart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Dev on 03-03-2016.
  */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Ad {
     private String title;
     private String desc;
     private String price;
-    private int imageId;
-    private int period;
+    private int period=0;
+
 
     public String getKey() {
         return key;
@@ -68,13 +71,7 @@ public class Ad {
         this.period = period;
     }
 
-    public Ad(String title, String desc, String price, int imageId) {
 
-        this.title = title;
-        this.desc = desc;
-        this.price = price;
-        this.imageId = imageId;
-    }
 
     public Ad() {
 
@@ -121,11 +118,5 @@ public class Ad {
         this.title = title;
     }
 
-    public int getImageId() {
-        return imageId;
-    }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
-    }
 }

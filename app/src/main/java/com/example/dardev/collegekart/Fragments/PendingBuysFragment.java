@@ -116,7 +116,6 @@ public class PendingBuysFragment extends Fragment {
 
             Ad item = (Ad) getItem(position);
             holder.title.setText(item.getTitle());
-            holder.icon.setImageResource(item.getImageId());
             holder.desc.setText(item.getDesc());
             holder.price.setText(item.getPrice());
 
@@ -142,11 +141,7 @@ public class PendingBuysFragment extends Fragment {
         setting_list = (ListView) rootView.findViewById(R.id.list_ads);
 
         options = new ArrayList<Ad>();
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25", R.drawable.ic_profile));
+
 
         //  FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 

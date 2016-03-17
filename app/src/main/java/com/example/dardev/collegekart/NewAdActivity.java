@@ -1,6 +1,7 @@
 package com.example.dardev.collegekart;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -45,6 +47,7 @@ public class NewAdActivity extends AppCompatActivity {
     private Firebase ref;
     private Firebase newRef;
     private Firebase fireref;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,12 @@ public class NewAdActivity extends AppCompatActivity {
 
     public void onCreateNewAd(View view)
     {
+        progress = new ProgressDialog(this);
+
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
         BitmapDrawable drawable = (BitmapDrawable) newAdImage.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -169,7 +178,9 @@ public class NewAdActivity extends AppCompatActivity {
                     ref.updateChildren(ads, new Firebase.CompletionListener() {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            System.out.println("ad added");
+                            progress.hide();
+                            Toast.makeText(getApplicationContext(),"Advertisement created successfully!",Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     });
 

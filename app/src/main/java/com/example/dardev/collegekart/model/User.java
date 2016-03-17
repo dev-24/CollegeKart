@@ -15,9 +15,27 @@ public class User {
     private String mobile;
     private String email;
     private String password;
+    private String image;
 
+    public String getKey() {
+        return key;
+    }
 
-            public User(String firstname, String lastname, String branch, String year, String mobile, String email, String password) {
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private String key;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public User(String firstname, String lastname, String branch, String year, String mobile, String email, String password) {
 
         this.firstname = firstname;
         this.lastname = lastname;
