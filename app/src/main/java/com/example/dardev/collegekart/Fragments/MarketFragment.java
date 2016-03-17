@@ -1,12 +1,25 @@
 package com.example.dardev.collegekart.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.dardev.collegekart.BuyRequestsActivity;
 import com.example.dardev.collegekart.ViewAdActivity;
+import com.example.dardev.collegekart.model.User;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.utilities.Base64;
 import com.melnykov.fab.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,6 +34,7 @@ import android.widget.TextView;
 import com.example.dardev.collegekart.R;
 import com.example.dardev.collegekart.model.Ad;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +57,10 @@ public class MarketFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ListView setting_list;
     private ArrayList<Ad> options;
+    private Firebase ref;
     private OptionsAdapter optionsAdapter;
+    private SharedPreferences sharedPreferences;
+    private ProgressDialog progress;
 
     /**
      * Use this factory method to create a new instance of
@@ -117,8 +134,17 @@ public class MarketFragment extends Fragment {
 
             Ad item = (Ad) getItem(position);
             holder.title.setText(item.getTitle());
-            holder.icon.setImageResource(item.getImageId());
-            holder.desc.setText(item.getDesc());
+            try {
+                byte[] imageByte = Base64.decode(item.getImage());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
+                holder.icon.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            holder.desc.setText(item.getType());
             holder.price.setText(item.getPrice());
 
             return convertView;
@@ -143,6 +169,8 @@ public class MarketFragment extends Fragment {
         setting_list = (ListView) rootView.findViewById(R.id.list_ads);
 
         options = new ArrayList<Ad>();
+        Firebase.setAndroidContext(getActivity());
+        sharedPreferences= getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
 
       //  FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -152,8 +180,7 @@ public class MarketFragment extends Fragment {
         fab.attachToListView(setting_list);
         //options.add(new SettingListItem("Edit contact details",R.drawable.ic_add ));
 
-        optionsAdapter = new OptionsAdapter();
-        setting_list.setAdapter(optionsAdapter);
+
 
          ((ViewGroup) fab.getParent()).removeView(fab);
         setting_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -171,6 +198,12 @@ public class MarketFragment extends Fragment {
 
 
         });
+        progress = new ProgressDialog(getContext());
+
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
         return rootView;
     }
 
@@ -180,6 +213,47 @@ public class MarketFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+    @Override
+    public void onResume() {
+        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads");
+        System.out.println("here");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                        Ad post = child.getValue(Ad.class);
+
+                        options.add(post);
+                        System.out.println(post.getTitle());
+
+                    }
+
+                }
+                optionsAdapter = new OptionsAdapter();
+
+
+                setting_list.setAdapter(optionsAdapter);
+                progress.hide();
+
+                optionsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            // ....
+        });
+
+
+        super.onResume();
+    }
+
 
     @Override
     public void onAttach(Activity activity) {

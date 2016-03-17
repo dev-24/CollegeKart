@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"   android:maxSdkVersion="21"  />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
@@ -16,7 +15,8 @@
         android:icon="@drawable/ck"
         android:label="CK"
         android:theme="@style/AppTheme"
-        tools:replace="android:label">
+        tools:replace="android:label"
+        android:largeHeap="true">
         <activity
             android:name=".MainActivity"
            >

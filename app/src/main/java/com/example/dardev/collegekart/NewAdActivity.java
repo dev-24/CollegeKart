@@ -140,6 +140,7 @@ public class NewAdActivity extends AppCompatActivity {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
         byte[] bb = bos.toByteArray();
+
         String image = Base64.encodeBytes(bb);
 
         Map<String, String> post1 = new HashMap<String, String>();
