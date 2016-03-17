@@ -1,6 +1,7 @@
 package com.example.dardev.collegekart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,8 @@ public class HomeActivity extends AppCompatActivity  {
     private String title;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,7 @@ public class HomeActivity extends AppCompatActivity  {
             getWindow().setStatusBarColor(getResources().getColor(R.color.ColorPrimaryDark));
         }
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        sharedPreferences= getSharedPreferences("MyPrefs",MODE_PRIVATE);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -141,6 +145,13 @@ public class HomeActivity extends AppCompatActivity  {
           case R.id.action_history:
               intent = new Intent(this,HistoryActivity.class);
               startActivity(intent);
+              break;
+          case R.id.action_logout:
+              sharedPreferences.edit().remove("UID").commit();
+              startActivity(new Intent(this,MainActivity.class));
+              finish();
+
+
       }
 
         return super.onOptionsItemSelected(item);

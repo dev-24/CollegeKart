@@ -1,5 +1,7 @@
 package com.example.dardev.collegekart;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,37 +21,43 @@ import android.widget.RadioGroup;
 
 import com.example.dardev.collegekart.Fragments.LoginFragment;
 import com.example.dardev.collegekart.Fragments.SignUpFragment;
+import com.example.dardev.collegekart.model.User;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity { /* When using Appcombat support library
+public class MainActivity extends AppCompatActivity {
+    private static Firebase ref; /* When using Appcombat support library
                                                          you need to extend Main Activity to
                                                          ActionBarActivity.
                                                       */
+    private static Firebase newRef;
 
     private Toolbar toolbar;                              // Declaring the Toolbar Object
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private Firebase ref;
 
     /*Login*/
-    private EditText loginEmail, loginPassword;
-    private String logEmail, logPass;
+
 
     /*Password*/
-    private RadioGroup rgYear, rgBranch;
-    private EditText firstName, lastName, mobile, email, password, passwordRe;
-    private String sFName, sLName, sMob, sEm, sPass, sPassRe, sYear, sBranch;
+    SharedPreferences sharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ref = new Firebase("https://collegekart.firebaseio.com/users");
-
+        Firebase.setAndroidContext(this);
+        sharedPreferences= getSharedPreferences("MyPrefs",MODE_PRIVATE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -65,25 +73,20 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+       if( !sharedPreferences.getString("UID","").equals(""))
+       {
+           Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+
+           startActivity(intent);
+           finish();
 
 
-        /*Login*/
-        loginEmail = (EditText) findViewById(R.id.input_email);
-        loginPassword = (EditText) findViewById(R.id.input_password);
+       }
+
+
 
         /*SignUp*/
-        rgYear = (RadioGroup) findViewById(R.id.rg_year);
-        String year = ((RadioButton)findViewById(rgYear.getCheckedRadioButtonId() )).getText().toString();
 
-        rgBranch = (RadioGroup) findViewById(R.id.rg_branch);
-        String branch = ((RadioButton)findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString();
-
-        firstName= (EditText) findViewById(R.id.input_firstName);
-        lastName= (EditText) findViewById(R.id.input_lastName);
-        mobile=(EditText) findViewById(R.id.input_number);
-        email= (EditText)findViewById(R.id.input_email);
-        password =(EditText) findViewById(R.id.input_password);
-        passwordRe= (EditText)findViewById(R.id.input_password_reenter);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -92,6 +95,48 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
         adapter.addFragment(new SignUpFragment(), "SIGN UP");
         //adapter.addFragment(new GuestFragment(), "GUEST");
         viewPager.setAdapter(adapter);
+    }
+
+    public void login(final EditText email, final EditText password) {
+        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users");
+
+        Query queryRef =ref.orderByChild("email").equalTo(email.getText().toString());
+
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    email.setError("No such user");
+
+                } else {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        User post = child.getValue(User.class);
+                        if (post.getPassword().equals(password.getText().toString())) {
+                            SharedPreferences.Editor editor=sharedPreferences.edit();
+                            editor.putString("UID",child.getKey());
+                            editor.commit();
+                            Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+            // ....
+        });
+
+
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -144,8 +189,67 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
         return super.onOptionsItemSelected(item);
     }
 
+    public void register(final String fName, final String lName, final String email, final String password, final String year, final String branch, final String mobile)
+    {        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users");
 
-    public String isLoginValid()
+        Query queryRef =ref.orderByChild("email").equalTo(email);
+
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()) {
+                    Map<String, String> post1 = new HashMap<String, String>();
+                    post1.put("firstname", fName);
+                    post1.put("lastname", lName);
+                    post1.put("email", email);
+                    post1.put("password", password);
+                    post1.put("year", year);
+                    post1.put("branch", branch);
+                    post1.put("mobile", mobile);
+                    newRef= ref.push();
+                    newRef.setValue(post1, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            if (firebaseError != null) {
+                                System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                            } else {
+                                System.out.println("Data saved successfully.");
+
+                                String postId = newRef.getKey();
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
+                                editor.putString("UID", postId);
+                                editor.commit();
+                                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+                                System.out.println(postId);
+
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                }
+                }
+
+
+
+
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+            // ....
+        });
+
+
+    }
+
+
+    /*public String isLoginValid()
     {
 
         logPass = loginPassword.getText().toString().trim();
@@ -163,9 +267,9 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
 
         return "Login Valid";
 
-    }
+    }*/
 
-    public String isSignUpValid()
+   /* public String isSignUpValid()
     {
 
         sFName= firstName.getText().toString().trim();
@@ -212,16 +316,16 @@ public class MainActivity extends AppCompatActivity { /* When using Appcombat su
         }
 
         return "SignUp Valid";
-    }
+    }*/
 
 
 
 
 
 
-    private boolean validateEmail(String email) {
+    /*private boolean validateEmail(String email) {
 
         return false;
-    }
+    }*/
 }
 

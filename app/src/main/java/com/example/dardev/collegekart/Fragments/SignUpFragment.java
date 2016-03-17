@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.dardev.collegekart.MainActivity;
 import com.example.dardev.collegekart.R;
 import com.firebase.client.Firebase;
 
@@ -29,6 +31,11 @@ public class SignUpFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Firebase ref;
 
+    private RadioGroup rgYear, rgBranch;
+    private EditText firstName, lastName, mobile, email, password, passwordRe;
+    private String sFName, sLName, sMob, sEm, sPass, sPassRe, sYear, sBranch;
+    private Button signupButton;
+    private String year, branch;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,8 +79,25 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.signup_fragment, container, false);
+        rgYear = (RadioGroup) rootView.findViewById(R.id.rg_year);
+         year= ((RadioButton) rootView.findViewById(rgYear.getCheckedRadioButtonId())).getText().toString();
 
+        rgBranch = (RadioGroup)  rootView.findViewById(R.id.rg_branch);
+       branch = ((RadioButton) rootView.findViewById(rgBranch.getCheckedRadioButtonId())).getText().toString();
 
+        firstName= (EditText)  rootView.findViewById(R.id.input_firstName);
+        lastName= (EditText)  rootView.findViewById(R.id.input_lastName);
+        mobile=(EditText)  rootView.findViewById(R.id.input_number);
+        email= (EditText) rootView.findViewById(R.id.input_email);
+        password =(EditText)  rootView.findViewById(R.id.input_password);
+        passwordRe= (EditText) rootView.findViewById(R.id.input_password_reenter);
+        signupButton= (Button) rootView.findViewById(R.id.btn_signup);
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).register(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString(), year,branch,mobile.getText().toString());
+            }
+        });
 
 
 
@@ -92,6 +116,7 @@ public class SignUpFragment extends Fragment {
 
     @Override
     public void onDetach() {
+
         super.onDetach();
         mListener = null;
     }

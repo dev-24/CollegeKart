@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dardev.collegekart.HomeActivity;
+import com.example.dardev.collegekart.MainActivity;
 import com.example.dardev.collegekart.R;
 import com.firebase.client.Firebase;
 
@@ -47,8 +48,7 @@ public class LoginFragment extends Fragment {
 
         inputEmail = (EditText) v.findViewById(R.id.input_email);
         inputPassword = (EditText) v.findViewById(R.id.input_password);
-        btnSignUp = (Button) v.findViewById(R.id.btn_signup);
-        guestUser =(TextView) v.findViewById(R.id.guestHyperLink);
+        btnSignUp = (Button) v.findViewById(R.id.btn_signin);
 
         inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
         inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
@@ -56,19 +56,12 @@ public class LoginFragment extends Fragment {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitForm();
+                ((MainActivity)getActivity()).login(inputEmail,inputPassword);
             }
         });
         ref = new Firebase("https://collegekart.firebaseio.com/users");
 
-        guestUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(getActivity(), HomeActivity.class);
-                intent.putExtra("EntryType","Guest");
-                startActivity(intent);
-            }
-        });
+
 
         return v;
 

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".HomeActivity"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:panelFullBackground="@color/bright_foreground_disabled_material_dark"
      >
@@ -22,5 +22,13 @@
         app:showAsAction="never"
 
         />
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="200"
+        android:title="Logout"
+        app:showAsAction="never"
+
+        />
+
 
 </menu>

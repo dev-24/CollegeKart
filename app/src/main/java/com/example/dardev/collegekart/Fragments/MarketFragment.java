@@ -143,11 +143,7 @@ public class MarketFragment extends Fragment {
         setting_list = (ListView) rootView.findViewById(R.id.list_ads);
 
         options = new ArrayList<Ad>();
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25" ,R.drawable.ic_profile));
-        options.add(new Ad("Login/Logout", "Buy", "25", R.drawable.ic_profile));
+
 
       //  FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 

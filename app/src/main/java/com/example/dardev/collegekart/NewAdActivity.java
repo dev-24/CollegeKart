@@ -2,11 +2,13 @@ package com.example.dardev.collegekart;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,10 +20,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.utilities.Base64;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewAdActivity extends AppCompatActivity {
 
@@ -31,9 +39,12 @@ public class NewAdActivity extends AppCompatActivity {
 
     private RadioGroup rgSellRent;
     private EditText productName, productPrice, productDescription, productRentPeriod;
-
+    private TextInputLayout productRentPeriodLayout;
     private String pName, pPrice, pDesc, pRentPeriod, pSellRent;
-
+    SharedPreferences sharedPreferences;
+    private Firebase ref;
+    private Firebase newRef;
+    private Firebase fireref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +66,32 @@ public class NewAdActivity extends AppCompatActivity {
         });
 
         rgSellRent = (RadioGroup) findViewById(R.id.edit_new_sell_rent);
-        productName = (EditText) findViewById(R.id.input_firstName);
-        productPrice = (EditText) findViewById(R.id.input_lastName);
-        productDescription =(EditText) findViewById(R.id.input_number);
-        productRentPeriod = (EditText)findViewById(R.id.input_email);
+        productRentPeriod = (EditText)findViewById(R.id.edit_new_period);
+
+        productRentPeriodLayout = (TextInputLayout) findViewById(R.id.input_layout_new_period);
+        productRentPeriodLayout.setVisibility(View.INVISIBLE);
+
+        rgSellRent.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                if(checkedId==R.id.radioButton_rent)
+                {
+                    productRentPeriodLayout.setVisibility(View.VISIBLE);
+                }
+                else if(checkedId==R.id.radioButton_sell)
+                {
+                    productRentPeriodLayout.setVisibility(View.INVISIBLE);
+                    productRentPeriod.setText("0");
+                }
+            }
+        });
+        productName = (EditText) findViewById(R.id.edit_new_product_name);
+        productPrice = (EditText) findViewById(R.id.edit_new_price);
+        productDescription =(EditText) findViewById(R.id.edit_new_description);
+        Firebase.setAndroidContext(this);
+        sharedPreferences=getSharedPreferences("MyPrefs",MODE_PRIVATE);
 
     }
 
@@ -100,7 +133,56 @@ public class NewAdActivity extends AppCompatActivity {
         }
     }
 
-    public String isValid(){
+    public void onCreateNewAd(View view)
+    {
+        BitmapDrawable drawable = (BitmapDrawable) newAdImage.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
+        byte[] bb = bos.toByteArray();
+        String image = Base64.encodeBytes(bb);
+
+        Map<String, String> post1 = new HashMap<String, String>();
+        post1.put("title", productName.getText().toString());
+        post1.put("desc", productDescription.getText().toString());
+        post1.put("price", productPrice.getText().toString());
+        post1.put("image", image);
+        post1.put("period", productRentPeriod.getText().toString());
+        post1.put("seller", sharedPreferences.getString("UID", ""));
+        post1.put("type", ((RadioButton)findViewById(rgSellRent.getCheckedRadioButtonId())).getText().toString());
+        fireref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads");
+
+        newRef= fireref.push();
+        newRef.setValue(post1, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+
+                    String postId = newRef.getKey();
+                    ref= new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/ads");
+                    Map<String, Object> ads = new HashMap<String, Object>();
+                    ads.put(postId,"true");
+                    ref.updateChildren(ads, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            System.out.println("ad added");
+                        }
+                    });
+
+
+
+                }
+            }
+        });
+
+    }
+
+
+
+  /*  public String isValid(){
 
         pName= productName.getText().toString().trim();
         pPrice = productPrice.getText().toString().trim();
@@ -132,7 +214,7 @@ public class NewAdActivity extends AppCompatActivity {
 
         return "New Ad. Valid";
     }
-
+*/
 
 
 
