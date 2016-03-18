@@ -1,7 +1,12 @@
 package com.example.dardev.collegekart.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,8 +25,15 @@ import com.example.dardev.collegekart.UserProfileActivity;
 import com.example.dardev.collegekart.model.Ad;
 import com.example.dardev.collegekart.model.BuyRequest;
 import com.example.dardev.collegekart.model.Transaction;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.utilities.Base64;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -47,6 +59,10 @@ public class GivenFragment extends Fragment {
     private ListView setting_list;
     private ArrayList<Transaction> options;
     private OptionsAdapter optionsAdapter;
+    private SharedPreferences sharedPreferences;
+    private ProgressDialog progress;
+    private Firebase ref;
+   private Transaction post;
 
     /**
      * Use this factory method to create a new instance of
@@ -71,11 +87,12 @@ public class GivenFragment extends Fragment {
     }
 
     class Holder{
-        TextView title;
-        TextView time_remain;
-        TextView buy_rent;
-        ImageView icon;
-        TextView tran_date;
+         TextView product;
+         ImageView image;
+         TextView time;
+         TextView type;
+         TextView period;
+
 
     }
 
@@ -108,11 +125,11 @@ public class GivenFragment extends Fragment {
                 LayoutInflater li = getActivity().getLayoutInflater();
                 convertView = li.inflate(R.layout.transactions_list_item, null);
                 holder=new Holder();
-                holder.title = (TextView) convertView.findViewById(R.id.transaction_product_name);
-                holder.buy_rent = (TextView) convertView.findViewById(R.id.transaction_buy_rent);
-                holder.icon = (ImageView) convertView.findViewById(R.id.product_icon);
-                holder.time_remain = (TextView) convertView.findViewById(R.id.time_temaining);
-                holder.tran_date = (TextView) convertView.findViewById(R.id.transaction_date);
+                holder.product = (TextView) convertView.findViewById(R.id.transaction_product_name);
+                holder.type = (TextView) convertView.findViewById(R.id.transaction_buy_rent);
+                holder.image = (ImageView) convertView.findViewById(R.id.product_icon);
+                holder.period = (TextView) convertView.findViewById(R.id.time_temaining);
+                holder.time = (TextView) convertView.findViewById(R.id.transaction_date);
 
                 convertView.setTag(holder);
             }
@@ -124,11 +141,20 @@ public class GivenFragment extends Fragment {
             }
 
             Transaction item = (Transaction) getItem(position);
-            holder.title.setText(item.getTitle());
-            holder.icon.setImageResource(item.getImageId());
-            holder.tran_date.setText(item.getTran_date().toString());
-            holder.time_remain.setText(item.getTime_remain());
-            holder.buy_rent.setText(item.getBuy_rent());
+            holder.product.setText(item.getProduct());
+            try {
+                byte[] imageByte = Base64.decode(item.getImage());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
+                holder.image.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            holder.time.setText(item.getTime());
+
+            holder.period.setText(" Months");
+            holder.type.setText(item.getType());
 
             return convertView;
         }
@@ -152,11 +178,7 @@ public class GivenFragment extends Fragment {
         setting_list = (ListView) rootView.findViewById(R.id.list_ads);
 
         options = new ArrayList<Transaction>();
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
+
 
         //  FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
@@ -165,8 +187,7 @@ public class GivenFragment extends Fragment {
         fab.attachToListView(setting_list);
         //options.add(new SettingListItem("Edit contact details",R.drawable.ic_add ));
 
-        optionsAdapter = new OptionsAdapter();
-        setting_list.setAdapter(optionsAdapter);
+
         setting_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -175,7 +196,7 @@ public class GivenFragment extends Fragment {
                 Transaction advertClicked = (Transaction) optionsAdapter.getItem(i);
 
                 Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-//based on item add info to intent
+                intent.putExtra("key",post.getBuyer());
                 startActivity(intent);
 
             }
@@ -183,6 +204,14 @@ public class GivenFragment extends Fragment {
 
         });
         ((ViewGroup) fab.getParent()).removeView(fab);
+        sharedPreferences=getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        Firebase.setAndroidContext(getActivity());
+        progress = new ProgressDialog(getContext());
+
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
         return rootView;
     }
 
@@ -203,6 +232,46 @@ public class GivenFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/transactions");
+        Query query=ref.orderByChild("seller").equalTo(sharedPreferences.getString("UID",""));
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+                    options.clear();
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                       post = child.getValue(Transaction.class);
+                        options.add(post);
+                        System.out.println(post.getProduct());
+
+                    }
+
+                }
+                optionsAdapter = new OptionsAdapter();
+
+
+                setting_list.setAdapter(optionsAdapter);
+                progress.hide();
+
+                optionsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            // ....
+        });
+
+
+        super.onResume();
     }
 
     /**

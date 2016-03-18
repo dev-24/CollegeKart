@@ -6,58 +6,71 @@ import java.util.Date;
  * Created by Dev on 04-03-2016.
  */
 public class Transaction {
-    private String title;
-    private int imageId;
-    private String time_remain;
-    private String buy_rent;
-    private Date tran_date;
+    private String product;
+    private String image;
+    private String time;
+    private String type;
+    private String period;
+    private String seller;
+    private String buyer;
 
-    public String getTitle() {
-        return title;
+    public String getProduct() {
+        return product;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
-    public int getImageId() {
-        return imageId;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getTime_remain() {
-        return time_remain;
+    public String getTime() {
+        return time;
     }
 
-    public void setTime_remain(String time_remain) {
-        this.time_remain = time_remain;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public String getBuy_rent() {
-        return buy_rent;
+    public String getType() {
+        return type;
     }
 
-    public void setBuy_rent(String buy_rent) {
-        this.buy_rent = buy_rent;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Date getTran_date() {
-        return tran_date;
+    public String getPeriod() {
+        return period;
     }
 
-    public void setTran_date(Date tran_date) {
-        this.tran_date = tran_date;
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
-    public Transaction(String title, int imageId, String time_remain, String buy_rent, Date tran_date) {
+    public String getSeller() {
+        return seller;
+    }
 
-        this.title = title;
-        this.imageId = imageId;
-        this.time_remain = time_remain;
-        this.buy_rent = buy_rent;
-        this.tran_date = tran_date;
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
+    }
+
+    public Transaction() {
+
     }
 }

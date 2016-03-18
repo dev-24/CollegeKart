@@ -2,6 +2,8 @@ package com.example.dardev.collegekart.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,8 +22,10 @@ import com.example.dardev.collegekart.UserProfileActivity;
 import com.example.dardev.collegekart.model.Ad;
 import com.example.dardev.collegekart.model.BuyRequest;
 import com.example.dardev.collegekart.model.Transaction;
+import com.firebase.client.utilities.Base64;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -73,13 +77,15 @@ public class TakenFragment extends Fragment {
     }
 
     class Holder{
-        TextView title;
-        TextView time_remain;
-        TextView buy_rent;
-        ImageView icon;
-        TextView tran_date;
+        TextView product;
+        ImageView image;
+        TextView time;
+        TextView type;
+        TextView period;
+
 
     }
+
 
     class OptionsAdapter extends BaseAdapter
     {
@@ -110,11 +116,11 @@ public class TakenFragment extends Fragment {
                 LayoutInflater li = getActivity().getLayoutInflater();
                 convertView = li.inflate(R.layout.transactions_list_item, null);
                 holder=new Holder();
-                holder.title = (TextView) convertView.findViewById(R.id.transaction_product_name);
-                holder.buy_rent = (TextView) convertView.findViewById(R.id.transaction_buy_rent);
-                holder.icon = (ImageView) convertView.findViewById(R.id.product_icon);
-                holder.time_remain = (TextView) convertView.findViewById(R.id.time_temaining);
-                holder.tran_date = (TextView) convertView.findViewById(R.id.transaction_date);
+                holder.product = (TextView) convertView.findViewById(R.id.transaction_product_name);
+                holder.type = (TextView) convertView.findViewById(R.id.transaction_buy_rent);
+                holder.image = (ImageView) convertView.findViewById(R.id.product_icon);
+                holder.period = (TextView) convertView.findViewById(R.id.time_temaining);
+                holder.time = (TextView) convertView.findViewById(R.id.transaction_date);
 
                 convertView.setTag(holder);
             }
@@ -126,11 +132,19 @@ public class TakenFragment extends Fragment {
             }
 
             Transaction item = (Transaction) getItem(position);
-            holder.title.setText(item.getTitle());
-            holder.icon.setImageResource(item.getImageId());
-            holder.tran_date.setText(item.getTran_date().toString());
-            holder.time_remain.setText(item.getTime_remain());
-            holder.buy_rent.setText(item.getBuy_rent());
+            holder.product.setText(item.getProduct());
+            try {
+                byte[] imageByte = Base64.decode(item.getImage());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
+                holder.image.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            holder.time.setText(item.getTime());
+            holder.period.setText("");
+            holder.type.setText(item.getType());
 
             return convertView;
         }
@@ -154,11 +168,6 @@ public class TakenFragment extends Fragment {
         setting_list = (ListView) rootView.findViewById(R.id.list_ads);
 
         options = new ArrayList<Transaction>();
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
-        options.add(new Transaction("Login/Logout" ,R.drawable.ic_profile,"time remaining","buy/rent",new Date("3/3/16")));
 
         //  FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
