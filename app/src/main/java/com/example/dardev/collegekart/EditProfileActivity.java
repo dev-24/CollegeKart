@@ -35,6 +35,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private EditText editFirstName, editLastName, editPhone, editEmail, editPass, editPassRe;
     private RadioGroup rgEditYear, rgEditBranch;
+    private RadioButton radioFe, radioSe, radioTe, radioBe, radioComp, radioIt, radioExtc, radioEtrx;
+
 
     private String sFName, sLName, sPhone, sEmail, sPass, sPassRe, sYear, sBranch;
     private Firebase ref;
@@ -67,6 +69,15 @@ public class EditProfileActivity extends AppCompatActivity {
         editEmail= (EditText)findViewById(R.id.edit_input_email);
         editPass =(EditText) findViewById(R.id.edit_input_password);
         editPassRe= (EditText)findViewById(R.id.edit_input_password_reenter);
+
+        radioFe = (RadioButton) findViewById(R.id.radio_fe);
+        radioSe = (RadioButton) findViewById(R.id.radio_se);
+        radioTe = (RadioButton) findViewById(R.id.radio_te);
+        radioBe = (RadioButton) findViewById(R.id.radio_be);
+        radioComp = (RadioButton) findViewById(R.id.radio_comps);
+        radioIt = (RadioButton) findViewById(R.id.radio_it);
+        radioEtrx = (RadioButton) findViewById(R.id.radio_etrx);
+        radioExtc = (RadioButton) findViewById(R.id.radio_extc);
         Firebase.setAndroidContext(this);
 
 

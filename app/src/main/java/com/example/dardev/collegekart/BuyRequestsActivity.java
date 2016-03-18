@@ -173,7 +173,7 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
                                         } else {
                                             ref.setValue(null);
                                             Toast.makeText(getApplicationContext(), "Buyer approved!", Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(getApplicationContext(), ViewAdActivity.class);
+                                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                             intent.putExtra("key", key);
                                             startActivity(intent);
                                             finish();
@@ -230,6 +230,7 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.show();
+        options.clear();
         ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+intent.getStringExtra("key"));
 
         ref.addValueEventListener(new ValueEventListener() {

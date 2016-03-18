@@ -60,7 +60,9 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="5dp"
                     android:focusable="false"
-        />
+                    android:duplicateParentState = "true"
+
+                    />
 
 </RelativeLayout>
 

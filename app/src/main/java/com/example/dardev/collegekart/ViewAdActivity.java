@@ -113,7 +113,7 @@ public class ViewAdActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (dataSnapshot != null) {
+                if (dataSnapshot.exists()) {
                     System.out.println("here");
 
 
