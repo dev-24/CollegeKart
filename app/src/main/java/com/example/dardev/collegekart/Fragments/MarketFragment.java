@@ -230,9 +230,11 @@ public class MarketFragment extends Fragment {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
 
                         Ad post = child.getValue(Ad.class);
+                        if(post!=null) {
                             post.setKey(child.getKey());
-                        options.add(post);
-                        System.out.println(post.getTitle());
+                            options.add(post);
+                            System.out.println(post.getTitle());
+                        }
 
                     }
 

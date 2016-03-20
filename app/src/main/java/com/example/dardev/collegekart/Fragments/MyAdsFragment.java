@@ -254,9 +254,11 @@ public class MyAdsFragment extends Fragment {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
 
                         post = child.getValue(Ad.class);
-                        post.setKey(child.getKey());
-                        options.add(post);
-                        System.out.println(post.getTitle());
+                        if(post!=null) {
+                            post.setKey(child.getKey());
+                            options.add(post);
+                            System.out.println(post.getTitle());
+                        }
 
                     }
 

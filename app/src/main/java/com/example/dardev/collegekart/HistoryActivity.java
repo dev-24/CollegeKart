@@ -1,6 +1,7 @@
 package com.example.dardev.collegekart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ public class HistoryActivity extends AppCompatActivity {
     private Toolbar toolbar;                              // Declaring the Toolbar Object
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        sharedPreferences = getSharedPreferences("MyPrefs",MODE_PRIVATE);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -107,11 +110,20 @@ public class HistoryActivity extends AppCompatActivity {
                 return true;
             case R.id.action_home:
                 Intent intent= new Intent(this,HomeActivity.class);
+
                 startActivity(intent);
                 break;
             case R.id.action_settings:
                 Intent intent1 =new Intent(this, EditProfileActivity.class);
+                intent1.putExtra("key",sharedPreferences.getString("UID",""));
+
                 startActivity(intent1);
+                break;
+            case R.id.action_logout:
+                sharedPreferences.edit().remove("UID").commit();
+                startActivity(new Intent(this,MainActivity.class));
+                finish();
+
         }
         return super.onOptionsItemSelected(item);
     }

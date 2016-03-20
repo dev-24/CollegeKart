@@ -35,6 +35,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -151,12 +152,34 @@ public class GivenFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            holder.time.setText(item.getTime());
 
-            holder.period.setText(" Months");
+            holder.time.setText(item.getTime());
             holder.type.setText(item.getType());
 
+            if(item.getType().equals("RENT")){
+
+
+            String remaining[] = item.getTime().split("[/]");
+            int adMonth = Integer.parseInt(remaining[1]);
+            int adYear = Integer.parseInt(remaining[2]);
+                if(adMonth+Integer.parseInt(item.getPeriod())>12)
+                {
+                    adYear=adYear+(adMonth+Integer.parseInt(item.getPeriod()))/12;
+                    adMonth=(adMonth+Integer.parseInt(item.getPeriod()))%12;
+                    System.out.println(adMonth);
+
+                }
+                else
+                    adMonth=adMonth+Integer.parseInt(item.getPeriod());
+                System.out.println(adMonth);
+
+                holder.period.setText("Return on: "+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"/"+adMonth+"/"+adYear);
+
+            }
+            else
+            holder.period.setText("");
             return convertView;
+
         }
     }
 
@@ -196,7 +219,7 @@ public class GivenFragment extends Fragment {
                 Transaction advertClicked = (Transaction) optionsAdapter.getItem(i);
 
                 Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-                intent.putExtra("key",post.getBuyer());
+                intent.putExtra("key",advertClicked.getBuyer());
                 startActivity(intent);
 
             }

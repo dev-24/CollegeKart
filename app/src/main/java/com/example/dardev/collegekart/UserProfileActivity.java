@@ -89,13 +89,13 @@ public class UserProfileActivity extends AppCompatActivity {
                     prof_mobile.setText("Contact: "+post.getMobile());
                     prof_year.setText("Year: "+post.getYear());
                     prof_email.setText(post.getEmail());
-                    prof_branch.setText("Class: "+post.getBranch());
+                    prof_branch.setText("Class: "+post.getBranch().toUpperCase());
 
                     try {
                         byte[] imageByte = Base64.decode(post.getImage());
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length, options);
-//                        viewAdImage.setImageBitmap(bitmap);
+                    prof_image.setImageBitmap(bitmap);
 
                     } catch (Exception e) {
 

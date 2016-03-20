@@ -146,8 +146,10 @@ public class NewAdActivity extends AppCompatActivity {
         progress.show();
         BitmapDrawable drawable = (BitmapDrawable) newAdImage.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
+        Bitmap bitmapComp = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
+        bitmapComp.compress(Bitmap.CompressFormat.PNG,100,bos);
         byte[] bb = bos.toByteArray();
 
         String image = Base64.encodeBytes(bb);

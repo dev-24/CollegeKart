@@ -1,7 +1,10 @@
 package com.example.dardev.collegekart.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -22,11 +25,17 @@ import com.example.dardev.collegekart.UserProfileActivity;
 import com.example.dardev.collegekart.model.Ad;
 import com.example.dardev.collegekart.model.BuyRequest;
 import com.example.dardev.collegekart.model.Transaction;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.client.utilities.Base64;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -53,6 +62,9 @@ public class TakenFragment extends Fragment {
     private ListView setting_list;
     private ArrayList<Transaction> options;
     private OptionsAdapter optionsAdapter;
+    private SharedPreferences sharedPreferences;
+    private ProgressDialog progress;
+    private Transaction post;
 
     /**
      * Use this factory method to create a new instance of
@@ -143,10 +155,34 @@ public class TakenFragment extends Fragment {
                 e.printStackTrace();
             }
             holder.time.setText(item.getTime());
-            holder.period.setText("");
             holder.type.setText(item.getType());
 
+            if(item.getType().equals("RENT")){
+
+
+                String remaining[] = item.getTime().split("[/]");
+               int adMonth = Integer.parseInt(remaining[1]);
+                int adYear = Integer.parseInt(remaining[2]);
+                if(adMonth+Integer.parseInt(item.getPeriod())>12)
+                {
+
+                    adMonth=(adMonth+Integer.parseInt(item.getPeriod()))%12;
+                    adYear=adYear+(adMonth+Integer.parseInt(item.getPeriod()))/12;
+                    System.out.println(adMonth);
+
+                }
+                else
+                    adMonth=adMonth+Integer.parseInt(item.getPeriod());
+
+                System.out.println(adMonth);
+
+                holder.period.setText("Return on: "+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"/"+adMonth+"/"+adYear);
+
+            }
+            else
+                holder.period.setText("");
             return convertView;
+
         }
     }
 
@@ -188,13 +224,21 @@ public class TakenFragment extends Fragment {
                 Transaction advertClicked = (Transaction) optionsAdapter.getItem(i);
 
                 Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-//based on item add info to intent
+                intent.putExtra("key",advertClicked.getSeller());
                 startActivity(intent);
 
             }
 
 
         });
+        sharedPreferences=getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        Firebase.setAndroidContext(getActivity());
+        progress = new ProgressDialog(getContext());
+
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
         return rootView;
     }
 
@@ -230,6 +274,46 @@ public class TakenFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        Firebase ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/transactions");
+        Query query=ref.orderByChild("buyer").equalTo(sharedPreferences.getString("UID",""));
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+                    options.clear();
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                        post = child.getValue(Transaction.class);
+                        options.add(post);
+                        System.out.println(post.getProduct());
+
+                    }
+
+                }
+                optionsAdapter = new OptionsAdapter();
+
+
+                setting_list.setAdapter(optionsAdapter);
+                progress.hide();
+
+                optionsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            // ....
+        });
+
+
+        super.onResume();
     }
 
 
