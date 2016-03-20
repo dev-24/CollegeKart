@@ -162,7 +162,7 @@ public class NewAdActivity extends AppCompatActivity {
         post1.put("period", productRentPeriod.getText().toString());
         post1.put("seller", sharedPreferences.getString("UID", ""));
         post1.put("type", ((RadioButton)findViewById(rgSellRent.getCheckedRadioButtonId())).getText().toString());
-        fireref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads");
+        fireref = new Firebase("https://collegekart.firebaseio.com/ads");
 
         newRef= fireref.push();
         newRef.setValue(post1, new Firebase.CompletionListener() {
@@ -174,7 +174,7 @@ public class NewAdActivity extends AppCompatActivity {
                     System.out.println("Data saved successfully.");
 
                     String postId = newRef.getKey();
-                    ref= new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/ads");
+                    ref= new Firebase("https://collegekart.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/ads");
                     Map<String, Object> ads = new HashMap<String, Object>();
                     ads.put(postId,"true");
                     ref.updateChildren(ads, new Firebase.CompletionListener() {

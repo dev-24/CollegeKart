@@ -218,7 +218,7 @@ public class MarketFragment extends Fragment {
     }
     @Override
     public void onResume() {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads");
+        ref = new Firebase("https://collegekart.firebaseio.com/ads");
         System.out.println("here");
 
         ref.addValueEventListener(new ValueEventListener() {

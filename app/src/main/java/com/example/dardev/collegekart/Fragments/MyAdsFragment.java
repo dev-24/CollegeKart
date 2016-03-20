@@ -243,7 +243,7 @@ public class MyAdsFragment extends Fragment {
 
     @Override
     public void onResume() {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads");
+        ref = new Firebase("https://collegekart.firebaseio.com/ads");
         Query queryRef=ref.orderByChild("seller").equalTo(sharedPreferences.getString("UID",""));
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override

@@ -196,24 +196,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_password_reenter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-
-
-
-                <EditText
-                    android:theme="@style/TextAppearence.App.TextInputLayout"
-                    android:id="@+id/input_password_reenter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:textColor="@color/activatedColor"
-                    android:hint="Re-enter password" />
-            </android.support.design.widget.TextInputLayout>
-
             <Button android:id="@+id/btn_signup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.example.dardev.collegekart;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -65,18 +66,25 @@ public class ViewAdActivity extends AppCompatActivity {
         buyrent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+ intent.getStringExtra("key")+"/buyrequests");
+                final ProgressDialog progress = new ProgressDialog(ViewAdActivity.this);
+
+                progress.setMessage("Loading");
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
+                progress.show();
+                ref = new Firebase("https://collegekart.firebaseio.com/ads/"+ intent.getStringExtra("key")+"/buyrequests");
                 Map<String, Object> post1 = new HashMap<String, Object>();
                 post1.put(sharedPreferences.getString("UID", ""), "true");
                 ref.updateChildren(post1, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        Firebase fireRef= new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/buyrequests");
+                        Firebase fireRef= new Firebase("https://collegekart.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/buyrequests");
                         Map<String, Object> buyRequest = new HashMap<String, Object>();
                         buyRequest.put(intent.getStringExtra("key"),"true");
                         fireRef.updateChildren(buyRequest, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                progress.hide();
                                 Toast.makeText(getApplicationContext(), "Request created successfully!", Toast.LENGTH_LONG).show();
                             }
                         });
@@ -106,7 +114,7 @@ public class ViewAdActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+intent.getStringExtra("key"));
+        ref = new Firebase("https://collegekart.firebaseio.com/ads/"+intent.getStringExtra("key"));
         System.out.println(intent.getStringExtra("key"));
 
         ref.addValueEventListener(new ValueEventListener() {
@@ -114,7 +122,6 @@ public class ViewAdActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists()) {
-                    System.out.println("here");
 
 
                     post = dataSnapshot.getValue(Ad.class);
@@ -160,9 +167,5 @@ public class ViewAdActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public void  onViewProfile(View view)
-    {
-        Intent intent=new Intent(this,UserProfileActivity.class);
-        startActivity(intent);
-    }
+
 }

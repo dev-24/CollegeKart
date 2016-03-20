@@ -75,7 +75,7 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         Intent intent=getIntent();
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+intent.getStringExtra("key"));
+        ref = new Firebase("https://collegekart.firebaseio.com/users/"+intent.getStringExtra("key"));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override

@@ -46,6 +46,8 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
     private Firebase ref;
     private User post;
     private ProgressDialog progress;
+    private TextView norequests;
+    ProgressDialog progressD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,12 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Firebase.setAndroidContext(this);
         sharedPreferences=getSharedPreferences("MyPrefs",MODE_PRIVATE);
+        norequests= (TextView) findViewById(R.id.no_requests);
+         progressD = new ProgressDialog(this);
+
+        progressD.setMessage("Please Wait");
+        progressD.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressD.setIndeterminate(true);
 
 
     }
@@ -144,8 +152,10 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    progressD.show();
                    final String key= (String) view.getTag();
-                    ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+getIntent().getStringExtra("key"));
+                    ref = new Firebase("https://collegekart.firebaseio.com/ads/"+getIntent().getStringExtra("key"));
 
 
                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,7 +174,7 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
                                 post1.put("type", dataSnapshot.child("type").getValue(String.class));
                                 post1.put("image", dataSnapshot.child("image").getValue(String.class));
                                 post1.put("time", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"/"+(1+Calendar.getInstance().get(Calendar.MONTH))+"/"+Calendar.getInstance().get(Calendar.YEAR));
-                                Firebase newRef = new Firebase("https://fiery-inferno-2210.firebaseio.com/transactions/"+getIntent().getStringExtra("key"));
+                                Firebase newRef = new Firebase("https://collegekart.firebaseio.com/transactions/"+getIntent().getStringExtra("key"));
                                 newRef.setValue(post1, new Firebase.CompletionListener() {
                                     @Override
                                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -172,6 +182,7 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
                                             System.out.println("Data could not be saved. " + firebaseError.getMessage());
                                         } else {
                                             ref.setValue(null);
+                                            progressD.hide();
                                             Toast.makeText(getApplicationContext(), "Buyer approved!", Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                             intent.putExtra("key", key);
@@ -231,32 +242,34 @@ public class BuyRequestsActivity extends AppCompatActivity implements AdapterVie
         progress.setIndeterminate(true);
         progress.show();
         options.clear();
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/"+intent.getStringExtra("key"));
+        ref = new Firebase("https://collegekart.firebaseio.com/ads/"+intent.getStringExtra("key"));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot != null) {
+                    progress.hide();
 
                         System.out.println("ad "+dataSnapshot.getKey());
 
                         DataSnapshot buyRequests=  dataSnapshot.child("buyrequests");
+                        norequests.setText("No Buy Requests on this advertisement yet!");
                         if (buyRequests != null) {
                             for(DataSnapshot brChild: buyRequests.getChildren())
                             {
                                 System.out.println("buyrequest "+brChild.getKey());
-                                Firebase fireref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+brChild.getKey());
+                                Firebase fireref = new Firebase("https://collegekart.firebaseio.com/users/"+brChild.getKey());
                                 fireref.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot != null) {
-                                            progress.hide();
 
 
                                                 post = dataSnapshot.getValue(User.class);
                                                 post.setKey(dataSnapshot.getKey());
                                                 options.add(post);
+                                                norequests.setText("");
 
 
 

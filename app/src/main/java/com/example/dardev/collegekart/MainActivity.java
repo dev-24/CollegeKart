@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(final EditText email, final EditText password) {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users");
+        ref = new Firebase("https://collegekart.firebaseio.com/users");
 
         Query queryRef =ref.orderByChild("email").equalTo(email.getText().toString());
 
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void register(final String fName, final String lName, final String email, final String password, final String year, final String branch, final String mobile)
-    {        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users");
+    {        ref = new Firebase("https://collegekart.firebaseio.com/users");
 
         Query queryRef =ref.orderByChild("email").equalTo(email);
 

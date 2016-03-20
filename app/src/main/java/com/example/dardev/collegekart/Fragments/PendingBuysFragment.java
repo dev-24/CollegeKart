@@ -245,7 +245,7 @@ public class PendingBuysFragment extends Fragment {
     }
     @Override
     public void onResume() {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/buyrequests");
+        ref = new Firebase("https://collegekart.firebaseio.com/users/"+sharedPreferences.getString("UID","")+"/buyrequests");
         System.out.println("here");
         options.clear();
 
@@ -257,7 +257,7 @@ public class PendingBuysFragment extends Fragment {
 
                 if (dataSnapshot != null) {
                     for (final DataSnapshot child : dataSnapshot.getChildren()) {
-                        Firebase fireRef = new Firebase("https://fiery-inferno-2210.firebaseio.com/ads/" + child.getKey());
+                        Firebase fireRef = new Firebase("https://collegekart.firebaseio.com/ads/" + child.getKey());
                         System.out.println(child.getKey());
                         fireRef.addValueEventListener(new ValueEventListener() {
                             @Override

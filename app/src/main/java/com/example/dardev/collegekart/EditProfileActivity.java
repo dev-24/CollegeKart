@@ -1,6 +1,7 @@
 package com.example.dardev.collegekart;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -49,6 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private String sFName, sLName, sPhone, sEmail, sPass, sPassRe, sYear, sBranch;
     private Firebase ref;
     private User post;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +131,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         Intent intent=getIntent();
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+intent.getStringExtra("key"));
+        ref = new Firebase("https://collegekart.firebaseio.com/users/"+intent.getStringExtra("key"));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -208,7 +210,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     public void onEditProfile(View view)
     {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/users/"+getSharedPreferences("MyPrefs",MODE_PRIVATE).getString("UID",""));
+        ref = new Firebase("https://collegekart.firebaseio.com/users/"+getSharedPreferences("MyPrefs",MODE_PRIVATE).getString("UID",""));
         BitmapDrawable drawable = (BitmapDrawable) profileImage.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         Bitmap bitmapComp = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
@@ -217,6 +219,12 @@ public class EditProfileActivity extends AppCompatActivity {
         byte[] bb = bos.toByteArray();
 
         String image = Base64.encodeBytes(bb);
+        progress = new ProgressDialog(this);
+
+        progress.setMessage("Loading");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
 
     System.out.println("edit profile");
 
@@ -240,6 +248,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 System.out.println("Data could not be saved. " + firebaseError.getMessage());
                             } else {
                                 System.out.println("Data saved successfully.");
+                                progress.hide();
                                 Toast.makeText(getApplicationContext(), "Profile edited successfully", Toast.LENGTH_LONG).show();
                                 finish();
                             }

@@ -33,7 +33,7 @@ public class SignUpFragment extends Fragment {
 
     private RadioGroup rgYear, rgBranch;
     private EditText firstName, lastName, mobile, email, password, passwordRe;
-    private String sFName, sLName, sMob, sEm, sPass, sPassRe, sYear, sBranch;
+    private String sFName, sLName, sMob, sEm, sPass, sYear, sBranch;
     private Button signupButton;
     private String year, branch;
 
@@ -88,7 +88,6 @@ public class SignUpFragment extends Fragment {
         mobile=(EditText)  rootView.findViewById(R.id.input_number);
         email= (EditText) rootView.findViewById(R.id.input_email);
         password =(EditText)  rootView.findViewById(R.id.input_password);
-        passwordRe= (EditText) rootView.findViewById(R.id.input_password_reenter);
         signupButton= (Button) rootView.findViewById(R.id.btn_signup);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override

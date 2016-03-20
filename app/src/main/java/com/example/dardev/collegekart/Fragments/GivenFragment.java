@@ -259,7 +259,7 @@ public class GivenFragment extends Fragment {
 
     @Override
     public void onResume() {
-        ref = new Firebase("https://fiery-inferno-2210.firebaseio.com/transactions");
+        ref = new Firebase("https://collegekart.firebaseio.com/transactions");
         Query query=ref.orderByChild("seller").equalTo(sharedPreferences.getString("UID",""));
         query.addValueEventListener(new ValueEventListener() {
             @Override
